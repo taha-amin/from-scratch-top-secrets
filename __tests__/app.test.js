@@ -37,6 +37,14 @@ describe('top-secrets routes', () => {
 
     expect(res.body.email).toBe('test@example.com');
   });
+
+  it('POST logs in a user', async () => {
+    await request(app).post('/api/v1/users').send(mockUser);
+    const res = await request(app)
+      .post('/api/v1/users/sessions')
+      .send({ email: 'test@example.com', password: '12345' });
+    expect(res.status).toEqual(200);
+  });
   afterAll(() => {
     pool.end();
   });
