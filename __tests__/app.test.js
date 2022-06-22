@@ -32,16 +32,10 @@ describe('top-secrets routes', () => {
   beforeEach(() => {
     return setup(pool);
   });
-  it('creates a new user', async () => {
-    const res = await (await request(app).post('/api/v1/users')).send(mockUser);
-    const { firstName, lastName, email } = mockUser;
+  it('POST creates a new user', async () => {
+    const res = await request(app).post('/api/v1/users').send(mockUser);
 
-    expect(res.body).toEqual({
-      id: expect.any(String),
-      firstName,
-      lastName,
-      email,
-    });
+    expect(res.body.email).toBe('test@example.com');
   });
   afterAll(() => {
     pool.end();
