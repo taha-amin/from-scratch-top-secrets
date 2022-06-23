@@ -24,7 +24,7 @@ const registerAndLogin = async (userProps = {}) => {
 
   //then sign in
   const { email } = user;
-  await agent.post('/api/v1/users/sessions').setEncoding({ email, password });
+  await agent.post('/api/v1/users/sessions').send({ email, password });
   return [agent, user];
 };
 
@@ -52,6 +52,20 @@ describe('top-secrets routes', () => {
     const res = await request(app).delete('/api/v1/users/sessions');
     expect(res.status).toEqual(200);
     expect(res.body.message).toBe('Successfully signed out!');
+  });
+
+  it('Returns a list of secrets for logged in user', async () => {
+    const [agent] = await registerAndLogin();
+    const res = await agent.get('/api/v1/secrets');
+
+    expect(res.body).toEqual([
+      {
+        id: '1',
+        title: 'First Secret',
+        description: 'Shhhhh dont tell anyone',
+        created_at: expect.any(String),
+      },
+    ]);
   });
   afterAll(() => {
     pool.end();
