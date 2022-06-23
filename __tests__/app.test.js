@@ -67,6 +67,16 @@ describe('top-secrets routes', () => {
       },
     ]);
   });
+
+  it('Logged in user can create new secrets', async () => {
+    const [agent] = await registerAndLogin();
+    const res = await agent.post('/api/v1/secrets').send({
+      title: 'Second Secret',
+      description: 'I like turtles',
+    });
+    expect(res.status).toEqual(200);
+  });
+
   afterAll(() => {
     pool.end();
   });
