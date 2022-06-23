@@ -18,3 +18,6 @@ CREATE TABLE secrets (
     description TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO secrets (title, description)
+VALUES ('First Secret', 'Shhhhh dont tell anyone');
