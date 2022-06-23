@@ -45,6 +45,14 @@ describe('top-secrets routes', () => {
       .send({ email: 'test@example.com', password: '12345' });
     expect(res.status).toEqual(200);
   });
+
+  it('DELETE logs out a user', async () => {
+    await request(app).post('/api/v1/users').send(mockUser);
+    await request(app).post('/api/v1/users/sessions').send(mockUser);
+    const res = await request(app).delete('/api/v1/users/sessions');
+    expect(res.status).toEqual(200);
+    expect(res.body.message).toBe('Successfully signed out!');
+  });
   afterAll(() => {
     pool.end();
   });
